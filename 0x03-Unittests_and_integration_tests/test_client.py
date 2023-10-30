@@ -80,9 +80,12 @@ class TestGithubOrgClient(unittest.TestCase):
         with patch("client.GithubOrgClient._public_repos_url",
                    new_callable=PropertyMock) as mock_public_repos:
             mock_public_repos.return_value = test_payload["repos_url"]
-            self.assertEqual(client.GithubOrgClient("google").public_repos(),
-                            [".allstar",
-                              "abpackage"
-                            ])
+            self.assertEqual(
+                client.GithubOrgClient("google").public_repos(),
+                [
+                    ".allstar",
+                    "abpackage"
+                ],
+            )
             mock_public_repos.assert_called_once()
         mock_get_json.assert_called_once()
