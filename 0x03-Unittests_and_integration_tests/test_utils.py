@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """This module defines unit testing for test cases"""
 
-from utils import access_nested_map, get_json
+from utils import access_nested_map, get_json, memoize
 import unittest
 from unittest.mock import patch
 from parameterized import parameterized
@@ -34,7 +34,7 @@ class TestAccessNestedMap(unittest.TestCase):
 
 
 class TestGetJson(unittest.TestCase):
-    """Tests for get jdon function using parameterization"""
+    """Tests for get_json function using parameterization"""
 
     @parameterized.expand([
         ("http://example.com", {"payload": True}),
@@ -49,3 +49,26 @@ class TestGetJson(unittest.TestCase):
 
             # test that `get` method was called once
             mock.assert_called_once_with(test_url)
+
+
+class TestMemoize(unittest.TestCase):
+    """Defines unit testing"""
+    def test_memoize(self):
+        """test for memoization"""
+        class TestClass:
+            """test class"""
+            def a_method(self):
+                """A method that returns 42"""
+                return 42
+
+            @memoize
+            def a_property(self):
+                """returns value of a_method & stores it through memoization"""
+                return self.a_method()
+
+        with patch.object(TestClass, 'a_method', return_value=42) as mock:
+            test = TestClass()
+            test.a_property  # the only time a_method was called
+            test.a_property  # call from storage - memoized
+
+            mock.assert_called_once()
