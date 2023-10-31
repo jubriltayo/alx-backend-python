@@ -102,6 +102,7 @@ class TestGithubOrgClient(unittest.TestCase):
         client_license = client_org.has_license(repo, key)
         self.assertEqual(client_license, expected)
 
+
     @parameterized_class([
         {
             "org_payload": fixtures.TEST_PAYLOAD[0][0],
@@ -130,6 +131,22 @@ class TestGithubOrgClient(unittest.TestCase):
             cls.get_patcher = patch("requests.get", side_effect=get_payload)
             cls.get_patcher.start()
 
+        def test_public_repos(self) -> None:
+            """test public repos to return expected result"""
+            self.assertEqual(
+                client.GithubOrgClient("google").public_repos(),
+                self.expected_repos
+            )
+
+        def test_public_repos_with_license(self) -> None:
+            """test that public repos with license returns expected result"""
+            self.assertEqual(
+                client.GithubOrgClient("google")
+                .public_repos(license="apache-2.0"),
+                self.apache2_repos
+            )
+
         @classmethod
         def tearDownClass(cls) -> None:
             """tears down the initial class fixtures"""
+            cls.get_patcher.stop()
