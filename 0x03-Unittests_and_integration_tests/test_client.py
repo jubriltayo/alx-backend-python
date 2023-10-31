@@ -106,8 +106,8 @@ class TestGithubOrgClient(unittest.TestCase):
         {
             "org_payload": fixtures.TEST_PAYLOAD[0][0],
             "repos_payload": fixtures.TEST_PAYLOAD[0][1],
-            "expected_payload": fixtures.TEST_PAYLOAD[0][2],
-            "apache2_payload": fixtures.TEST_PAYLOAD[0][3]
+            "expected_repos": fixtures.TEST_PAYLOAD[0][2],
+            "apache2_repos": fixtures.TEST_PAYLOAD[0][3]
         }
     ])
     class TestIntegrationGithubOrgClient(unittest.TestCase):
@@ -118,8 +118,8 @@ class TestGithubOrgClient(unittest.TestCase):
         def setUpClass(cls) -> None:
             """set up initial class"""
             route_payload = {
-                "https://api.github.com/users/google": cls.org_payload,
-                "https://api.github.com/users/google/repos": cls.repos_payload,
+                "https://api.github.com/orgs/google": cls.org_payload,
+                "https://api.github.com/orgs/google/repos": cls.repos_payload,
             }
 
             def get_payload(url):
