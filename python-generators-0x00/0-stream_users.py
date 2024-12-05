@@ -11,7 +11,7 @@ def stream_users():
         password="root",
         database="ALX_prodev"
     )
-    cursor = connection.cursor()
+    cursor = connection.cursor(pymysql.cursors.DictCursor)
     cursor.execute("SELECT * FROM user_data")
     
     for row in cursor:

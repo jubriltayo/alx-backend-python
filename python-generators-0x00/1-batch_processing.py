@@ -12,7 +12,7 @@ def stream_users_in_batches(batch_size):
         password="root",
         database="ALX_prodev"
     )
-    cursor = connection.cursor()
+    cursor = connection.cursor(pymysql.cursors.DictCursor)
     cursor.execute("SELECT user_id, name, email, age FROM user_data")
 
     batch = []
@@ -34,7 +34,7 @@ def batch_processing(batch_size):
     """ Process each batch to filter users over the age of 25 """
     try:
         for batch in stream_users_in_batches(batch_size):
-            filtered_batch = [user for user in batch if user[3] > 25] # filter users with age over 25
+            filtered_batch = [user for user in batch if user['age'] > 25] # filter users with age over 25
             for user in filtered_batch:
                 print(user)
     except (BrokenPipeError, OSError):
