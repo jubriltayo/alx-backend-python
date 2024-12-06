@@ -63,9 +63,7 @@ It emphasizes practical applications of Python generators in real-world data pro
 
 ---
 
-## **Submission Instructions**  
-- **Repository**: [GitHub - alx-backend-python](https://github.com/jubriltayo/alx-backend-python.git)  
-- **Directory**: `python-generators-0x00`  
+## **Directory**  
 - **Files**:  
   - `seed.py`: Database setup and seeding.  
   - `0-stream_users.py`: Row streaming generator.  
