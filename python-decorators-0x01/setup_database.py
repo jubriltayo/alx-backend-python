@@ -8,7 +8,7 @@ def setup_database():
     # Create table if it doesn't exist
     cursor.execute('''
     CREATE TABLE IF NOT EXISTS users (
-        user_id TEXT PRIMARY KEY,
+        id TEXT PRIMARY KEY,
         name TEXT,
         email TEXT,
         age INTEGER
@@ -18,7 +18,7 @@ def setup_database():
     # Insert sample data if the table is empty
     cursor.execute('SELECT COUNT(*) FROM users')
     if cursor.fetchone()[0] == 0:  # No data
-        cursor.executemany('INSERT INTO users (user_id, name, email, age) VALUES (?, ?, ?, ?)', [
+        cursor.executemany('INSERT INTO users (id, name, email, age) VALUES (?, ?, ?, ?)', [
             ('1', 'Miss Arlene Herzog', 'Ada33@gmail.com', 103),
             ('2', 'John Doe', 'john.doe@example.com', 35),
             ('3', 'Jane Smith', 'jane.smith@example.com', 28)
