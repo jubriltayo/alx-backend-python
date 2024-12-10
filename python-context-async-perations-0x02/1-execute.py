@@ -1,10 +1,11 @@
 import pymysql
 
 
-class DatabaseConnection:
-    def __init__(self, query):
-        """ Initialization """
+class ExecuteQuery:
+    def __init__(self, query, params=None):
+        """ Initialize the context manager with a wuery and optional parameters """
         self.query = query
+        self.params = params
         self.connection = None
         self.cursor = None
 
@@ -19,7 +20,7 @@ class DatabaseConnection:
             database="ALX_prodev"
         )
         self.cursor = self.connection.cursor(pymysql.cursors.DictCursor)
-        self.cursor.execute(self.query)
+        self.cursor.execute(self.query, self.params)
         return self.cursor
 
     def __exit__(self, exc_type, exc_value, traceback):
@@ -34,10 +35,11 @@ class DatabaseConnection:
 
 
 if __name__ == "__main__":
-    query = "SELECT * FROM users"
+    query = "SELECT * FROM users WHERE age > %s"
+    params = 25
 
     try:
-        with DatabaseConnection(query) as cursor:
+        with ExecuteQuery(query, params) as cursor:
             for row in cursor:
                 print(row)
     except Exception as e:
