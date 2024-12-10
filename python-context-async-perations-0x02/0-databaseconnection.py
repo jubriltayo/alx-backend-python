@@ -35,7 +35,7 @@ class DatabaseConnection:
 
 
 if __name__ == "__main__":
-    query = "SELECT * FROM user_data"
+    query = "SELECT * FROM users"
 
     try:
         with DatabaseConnection(query) as cursor:
