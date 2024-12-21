@@ -42,6 +42,9 @@ INSTALLED_APPS = [
     # third party apps
     'rest_framework',
     'corsheaders',
+
+    # custom apps
+    'chats'
 ]
 
 MIDDLEWARE = [
@@ -129,8 +132,18 @@ USE_TZ = True
 STATIC_URL = 'static/'
 STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
 
+AUTH_USER_MODEL = 'chats.User'
+
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/5.1/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+
+REST_FRAMEWORK = {
+    'DEFAULT_RENDERER_CLASSES': [
+        'rest_framework.renderers.JSONRenderer',
+        'rest_framework.renderers.BrowsableAPIRenderer',
+    ],
+}
