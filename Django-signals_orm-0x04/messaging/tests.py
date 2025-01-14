@@ -34,6 +34,15 @@ class UserDeletionSignalTest(TestCase):
         Notification.objects.create(user=self.user, message=self.message)
         MessageHistory.objects.create(message=self.message, old_content="Original message content")
 
+    def test_message_edit_logging(self):
+        self.message.content = "Edited Message"
+        self.message.save()
+
+        self.assertEqual(MessageHistory.objects.count(), 1)
+        history = MessageHistory.objects.first()
+        self.assertEqual(history.old_content, "Original message content")
+        self.assertTrue(self.message.edited)
+
     def test_delete_user_and_cleanup_related_data(self):
         # delete user
         url = reverse("user-delete-account") # dynamic rendering of url also equal to api/users/delete-account/

@@ -28,6 +28,8 @@ def log_message_edit(sender, instance, **kwargs):
             MessageHistory.objects.create(message=old_message, old_content=old_message.message_body)
             # mark the message as edited
             instance.edited = True
+            instance.edited_by = instance.sender
+            instance.edited_at = instance.timestamp
     except Message.DoesNotExist:
         pass
 
@@ -37,21 +39,10 @@ def cleanup_user_related_data(sender, instance, **kwargs):
     """
     Signal to cleanup user related data when a user is deleted
     """
-    # delete all messages sent by the user
+    # delete all messages sent or received by the user
     Message.objects.filter(sender=instance).delete()
+    Message.objects.filter(receiver=instance).delete()
     # delete all notifications for the user
     Notification.objects.filter(user=instance).delete()
     # delete all message histories related to the user's sent messages
     MessageHistory.objects.filter(message__sender=instance).delete()
-
-
-@receiver(pre_save, sender=Message)
-def log_message_edit(sender, instance, **kwargs):
-    """
-    Signal to log message edits and save the old message content in MessageHistory
-    """
-    if not instance.pk:
-        old_message = Message.objects.get(pk=instance.pk)
-        if old_message.message_body != instance.message_body:
-            MessageHistory.objects.create(message=old_message, old_content=old_message.message_body)
-            instance.edited = True
