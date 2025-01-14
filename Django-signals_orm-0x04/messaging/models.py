@@ -1,7 +1,7 @@
 from django.db import models
 from django.contrib.auth import get_user_model
 import uuid
-from .managers import UnreadMessageManager
+from .managers import UnreadMessagesManager
 
 
 User = get_user_model() # This will use the custom user model of the main project (messaging_app)
@@ -23,7 +23,7 @@ class Message(models.Model):
     timestamp = models.DateTimeField(auto_now_add=True)
 
     objects = models.Manager() # default manager
-    unread_messages = UnreadMessageManager() # custom manager
+    unread_messages = UnreadMessagesManager() # custom manager
 
     def __str__(self):
         return f"Message {self.message_id} from {self.sender.email} to {self.receiver.email}"

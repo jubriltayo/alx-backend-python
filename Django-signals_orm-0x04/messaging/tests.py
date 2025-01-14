@@ -1,7 +1,7 @@
 from django.test import TestCase
 from rest_framework.test import APIClient
 from rest_framework.reverse import reverse
-from messaging.models import User, Message, Notification, MessageHistory, UnreadMessageManager
+from messaging.models import User, Message, Notification, MessageHistory, UnreadMessagesManager
 
 
 class MessagingSignalTest(TestCase):
@@ -57,7 +57,7 @@ class UserDeletionSignalTest(TestCase):
         self.assertFalse(MessageHistory.objects.filter(message__sender=self.user_id).exists())
 
 
-class UnreadMessageManagerTest(TestCase):
+class UnreadMessagesManagerTest(TestCase):
     def setUp(self):
         # create users
         self.user1 = User.objects.create(email="user1@example.com", username="user1")
