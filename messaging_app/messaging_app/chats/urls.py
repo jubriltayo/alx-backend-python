@@ -18,4 +18,7 @@ urlpatterns = [
     
     path('token/', TokenObtainPairView.as_view(), name='token_obtain_pair'),
     path('token/refresh/', TokenRefreshView.as_view(), name='token_refresh'),
+
+    # route for cached unread messages view
+    path('messages/unread/', MessageViewSet.as_view({'get': 'unread_messages_view'}), name='unread-messages')
 ]

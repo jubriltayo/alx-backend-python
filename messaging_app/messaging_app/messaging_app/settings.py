@@ -45,10 +45,14 @@ INSTALLED_APPS = [
     'rest_framework_simplejwt',
     'django_filters',
     'drf_yasg',
+    'django_extensions',
     'corsheaders',
 
     # custom apps
-    'chats'
+    'chats',
+
+    # custom modules - signals, logs, etc
+    # 'messaging',
 ]
 
 MIDDLEWARE = [
@@ -201,3 +205,10 @@ SWAGGER_SETTINGS = {
 }
 
 APPEND_SLASH = False
+
+CACHES = {
+    'default': {
+        'BACKEND': 'django.core.cache.backends.locmem.LocMemCache',
+        'LOCATION': 'unique-snowflake',
+    }
+}

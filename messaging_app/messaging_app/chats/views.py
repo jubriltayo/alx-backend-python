@@ -8,6 +8,8 @@ from rest_framework.exceptions import MethodNotAllowed, AuthenticationFailed
 from django_filters.rest_framework import DjangoFilterBackend
 from django.contrib.auth.models import AnonymousUser
 from django.db.models import Count
+from django.views.decorators.cache import cache_page
+from django.utils.decorators import method_decorator
 from .models import User, Message, Conversation
 from .serializers import UserSerializer, MessageSerializer, ConversationSerializer
 from .auth import create_user, generate_tokens_for_user, authenticate_user
@@ -103,6 +105,15 @@ class UserViewSet(viewsets.ModelViewSet):
             }, status=status.HTTP_403_FORBIDDEN)
         return super().list(request, *args, **kwargs)
 
+    @action(detail=False, methods=['delete'], url_path='delete-account')
+    def delete_account(self, request, *args, **kwargs):
+        user = request.user
+        user.delete()
+        return Response({
+            "status": "success",
+            "message": "Your account has been deleted successfully"
+        }, status=status.HTTP_204_NO_CONTENT)
+
 
 class ConversationViewSet(viewsets.ModelViewSet):
     """
@@ -191,7 +202,6 @@ class MessageViewSet(viewsets.ModelViewSet):
         serializer = self.get_serializer(filtered_queryset, many=True)
         return Response(serializer.data)
 
-
     # Create a new message
     @action(detail=False, methods=['post'])
     def send_message(self, request, *args, **kwargs):
@@ -252,3 +262,18 @@ class MessageViewSet(viewsets.ModelViewSet):
             return Response(message_serializer.data, status=status.HTTP_201_CREATED)
         return Response(message_serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
+
+    @method_decorator(cache_page(60))
+    def unread_messages_view(self, request, *args, **kwargs):
+        """
+        API endpoint to get unread messages for the authenticated user.
+        Cache for 60 seconds.
+        """
+        user = request.user
+
+        if not user.is_authenticated:
+            return Response({"detail": "Authentication required."}, status=401)
+        
+        unread_messages = Message.unread_messages.for_user(user)
+        serializer = MessageSerializer(unread_messages, many=True)
+        return Response(serializer.data, status=status.HTTP_200_OK)
