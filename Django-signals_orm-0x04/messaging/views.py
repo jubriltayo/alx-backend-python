@@ -8,7 +8,7 @@ from django.views.decorators.cache import cache_page
 
 
 @login_required
-def delete_account(request):
+def delete_user(request):
     if request.method == 'DELETE':
         user = request.user
         user.delete()
