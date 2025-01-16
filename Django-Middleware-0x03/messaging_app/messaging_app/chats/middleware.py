@@ -10,7 +10,7 @@ class RequestLoggingMiddleware:
     def __init__(self, get_response):
         self.get_response = get_response
         # configure logging to write request.log
-        logging.basicConfig(filename="request.log", level=logging.INFO, format="%(message)s")
+        logging.basicConfig(filename="requests.log", level=logging.INFO, format="%(message)s")
         self.logger = logging.getLogger(__name__)
 
     def __call__(self, request):
