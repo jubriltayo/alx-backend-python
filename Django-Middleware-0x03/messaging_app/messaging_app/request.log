@@ -1,0 +1,41 @@
+2025-01-15 23:15:48.250812 - User: Anonymous - Path: /
+Not Found: /
+2025-01-15 23:15:49.236523 - User: Anonymous - Path: /favicon.ico
+Not Found: /favicon.ico
+2025-01-15 23:17:15.665404 - User: Anonymous - Path: /api/auth/login/
+2025-01-15 23:18:53.941768 - User: Anonymous - Path: /api/messages/send_message/
+
+2025-01-15 23:45:41.903424 - User: Anonymous - Path: /api/conversations
+Forbidden: /api/conversations
+
+2025-01-16 00:24:51.244070 - User: Anonymous - Path: /api/messages/send_message/
+Forbidden: /api/messages/send_message/
+2025-01-16 00:25:15.794774 - User: Anonymous - Path: /api/messages/send_message/
+Unauthorized: /api/messages/send_message/
+2025-01-16 00:25:26.222804 - User: Anonymous - Path: /api/auth/login/
+2025-01-16 00:25:50.286048 - User: Anonymous - Path: /api/messages/send_message/
+2025-01-16 00:25:52.966403 - User: Anonymous - Path: /api/messages/send_message/
+2025-01-16 00:25:54.236480 - User: Anonymous - Path: /api/messages/send_message/
+2025-01-16 00:25:55.267855 - User: Anonymous - Path: /api/messages/send_message/
+2025-01-16 00:25:56.211265 - User: Anonymous - Path: /api/messages/send_message/
+Forbidden: /api/messages/send_message/
+
+2025-01-16 00:28:43.378522 - User: Anonymous - Path: /api/messages/send_message/
+2025-01-16 00:43:28.398293 - User: Anonymous - Path: /api/messages/send_message/
+Forbidden: /api/messages/send_message/
+2025-01-16 00:43:45.695242 - User: Anonymous - Path: /api/messages/send_message/
+Forbidden: /api/messages/send_message/
+2025-01-16 00:43:59.868809 - User: Anonymous - Path: /api/auth/login/
+Forbidden: /api/auth/login/
+2025-01-16 00:51:39.814521 - User: Anonymous - Path: /api/auth/login/
+2025-01-16 00:52:00.060653 - User: Anonymous - Path: /api/messages/send_message/
+Forbidden: /api/messages/send_message/
+
+2025-01-16 01:08:27.398579 - User: Anonymous - Path: /api/messages/send_message/
+Forbidden: /api/messages/send_message/
+2025-01-16 01:08:45.378670 - User: Anonymous - Path: /api/auth/login/
+2025-01-16 01:09:05.547016 - User: Anonymous - Path: /api/messages/send_message/
+
+2025-01-16 01:21:49.774406 - User: Anonymous - Path: /api/auth/login/
+2025-01-16 01:22:12.565425 - User: Anonymous - Path: /api/messages/send_message/
+Forbidden: /api/messages/send_message/
