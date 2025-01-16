@@ -1,0 +1,279 @@
+{
+    "info": {
+        "_postman_id": "9d56f346-ff54-484e-b01d-d743f71955f0",
+        "name": "post_man-Collections",
+        "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+        "description": ""
+    },
+    "item": [
+        {
+            "name": "messages lists",
+            "request": {
+                "method": "GET",
+                "url": {
+                    "raw": "127.0.0.1:8000/api/messages/",
+                    "path": [
+                        "api",
+                        "messages"
+                    ],
+                    "host": [
+                        "127",
+                        "0",
+                        "0",
+                        "1"
+                    ],
+                    "port": "8000"
+                },
+                "auth": {
+                    "type": "bearer",
+                    "bearer": [
+                        {
+                            "key": "token",
+                            "value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNzM1MTQ5NDM1LCJpYXQiOjE3MzUxNDU4MzUsImp0aSI6IjFlYzY0NmY2YjJhMjRiNTNiMmQ2ODVmMzhlMTUyZGZhIiwidXNlcl9pZCI6ImMxNzJkZWE3LTRjOTEtNDE0Mi05OTkyLWVlMzg5N2Y1YmY5ZCJ9.F6A3l1ZlgiyXg_aIbomY1JMlfhxE4LpLe5EHKS7mlEs",
+                            "type": "string"
+                        }
+                    ]
+                }
+            }
+        },
+        {
+            "name": "messages create",
+            "request": {
+                "method": "POST",
+                "url": {
+                    "raw": "127.0.0.1:8000/api/messages/send_message/",
+                    "path": [
+                        "api",
+                        "messages",
+                        "send_message"
+                    ],
+                    "host": [
+                        "127",
+                        "0",
+                        "0",
+                        "1"
+                    ],
+                    "port": "8000"
+                },
+                "body": {
+                    "mode": "raw",
+                    "options": {
+                        "raw": {
+                            "language": "json"
+                        }
+                    },
+                    "raw": "{\n  \"message_body\": \"Harry! You have to make it up to us, John your buddy\",\n  \"participants\": [\"610feec4-d9bc-49e1-86be-2a82044c4576\"]\n}"
+                },
+                "auth": {
+                    "type": "bearer",
+                    "bearer": [
+                        {
+                            "key": "token",
+                            "value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNzM1MjYxNjUwLCJpYXQiOjE3MzUyNTgwNTAsImp0aSI6ImVlYzRkZTMxMmM1MzQ3NDRiNGViOWMxMmQxNDJkMWRlIiwidXNlcl9pZCI6ImQ4ZjBhOTI4LTM5OWMtNDg1OC04NWMzLTc4OThhNmUyZmNhZiJ9.pUGyY0xetPCxb8Ocivj35FHnfuyofsxvTEqAchUHIHs",
+                            "type": "string"
+                        }
+                    ]
+                }
+            }
+        },
+        {
+            "name": "conversations create",
+            "request": {
+                "method": "POST",
+                "url": {
+                    "raw": "127.0.0.1:8000/api/conversations/",
+                    "path": [
+                        "api",
+                        "conversations"
+                    ],
+                    "host": [
+                        "127",
+                        "0",
+                        "0",
+                        "1"
+                    ],
+                    "port": "8000"
+                },
+                "body": {
+                    "mode": "raw",
+                    "options": {
+                        "raw": {
+                            "language": "json"
+                        }
+                    },
+                    "raw": "{\n  \"participants\": [\"d8f0a928-399c-4858-85c3-7898a6e2fcaf\", \"46af38b2-b337-4cb2-a121-c10372c9e729\"]\n}"
+                },
+                "auth": {
+                    "type": "bearer",
+                    "bearer": [
+                        {
+                            "key": "token",
+                            "value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNzM1MjYxNjUwLCJpYXQiOjE3MzUyNTgwNTAsImp0aSI6ImVlYzRkZTMxMmM1MzQ3NDRiNGViOWMxMmQxNDJkMWRlIiwidXNlcl9pZCI6ImQ4ZjBhOTI4LTM5OWMtNDg1OC04NWMzLTc4OThhNmUyZmNhZiJ9.pUGyY0xetPCxb8Ocivj35FHnfuyofsxvTEqAchUHIHs",
+                            "type": "string"
+                        }
+                    ]
+                }
+            }
+        },
+        {
+            "name": "conversations lists",
+            "request": {
+                "method": "GET",
+                "url": {
+                    "raw": "127.0.0.1:8000/api/conversations/",
+                    "path": [
+                        "api",
+                        "conversations"
+                    ],
+                    "host": [
+                        "127",
+                        "0",
+                        "0",
+                        "1"
+                    ],
+                    "port": "8000"
+                },
+                "auth": {
+                    "type": "bearer",
+                    "bearer": [
+                        {
+                            "key": "token",
+                            "value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNzM1MjYxNjUwLCJpYXQiOjE3MzUyNTgwNTAsImp0aSI6ImVlYzRkZTMxMmM1MzQ3NDRiNGViOWMxMmQxNDJkMWRlIiwidXNlcl9pZCI6ImQ4ZjBhOTI4LTM5OWMtNDg1OC04NWMzLTc4OThhNmUyZmNhZiJ9.pUGyY0xetPCxb8Ocivj35FHnfuyofsxvTEqAchUHIHs",
+                            "type": "string"
+                        }
+                    ]
+                }
+            }
+        },
+        {
+            "name": "user login - token generation",
+            "request": {
+                "method": "POST",
+                "url": {
+                    "raw": "127.0.0.1:8000/api/auth/login/",
+                    "path": [
+                        "api",
+                        "auth",
+                        "login"
+                    ],
+                    "host": [
+                        "127",
+                        "0",
+                        "0",
+                        "1"
+                    ],
+                    "port": "8000"
+                },
+                "body": {
+                    "mode": "raw",
+                    "options": {
+                        "raw": {
+                            "language": "json"
+                        }
+                    },
+                    "raw": "{\n  \"email\": \"janedoe@gmail.com\",\n  \"password\": \"password\"\n}"
+                }
+            }
+        },
+        {
+            "name": "user register",
+            "request": {
+                "method": "POST",
+                "url": {
+                    "raw": "127.0.0.1:8000/api/auth/register/",
+                    "path": [
+                        "api",
+                        "auth",
+                        "register"
+                    ],
+                    "host": [
+                        "127",
+                        "0",
+                        "0",
+                        "1"
+                    ],
+                    "port": "8000"
+                },
+                "body": {
+                    "mode": "raw",
+                    "options": {
+                        "raw": {
+                            "language": "json"
+                        }
+                    },
+                    "raw": "{\n  \"first_name\": \"Harry\",\n  \"last_name\": \"Potter\",\n  \"email\": \"hp@gmail.com\",\n  \"phone_number\": \"124343423\",\n  \"password\": \"password\"\n}"
+                }
+            }
+        },
+        {
+            "name": "user lists",
+            "request": {
+                "method": "GET",
+                "url": {
+                    "raw": "127.0.0.1:8000/api/users/",
+                    "path": [
+                        "api",
+                        "users"
+                    ],
+                    "host": [
+                        "127",
+                        "0",
+                        "0",
+                        "1"
+                    ],
+                    "port": "8000"
+                },
+                "auth": {
+                    "type": "bearer",
+                    "bearer": [
+                        {
+                            "key": "token",
+                            "value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNzM1MjYxNjUwLCJpYXQiOjE3MzUyNTgwNTAsImp0aSI6ImVlYzRkZTMxMmM1MzQ3NDRiNGViOWMxMmQxNDJkMWRlIiwidXNlcl9pZCI6ImQ4ZjBhOTI4LTM5OWMtNDg1OC04NWMzLTc4OThhNmUyZmNhZiJ9.pUGyY0xetPCxb8Ocivj35FHnfuyofsxvTEqAchUHIHs",
+                            "type": "string"
+                        }
+                    ]
+                }
+            }
+        },
+        {
+            "name": "user detail",
+            "request": {
+                "method": "PATCH",
+                "url": {
+                    "raw": "127.0.0.1:8000/api/users/d8f0a928-399c-4858-85c3-7898a6e2fcaf/",
+                    "path": [
+                        "api",
+                        "users",
+                        "d8f0a928-399c-4858-85c3-7898a6e2fcaf"
+                    ],
+                    "host": [
+                        "127",
+                        "0",
+                        "0",
+                        "1"
+                    ],
+                    "port": "8000"
+                },
+                "body": {
+                    "mode": "raw",
+                    "options": {
+                        "raw": {
+                            "language": "json"
+                        }
+                    },
+                    "raw": "{\n  \"role\": \"admin\"\n}"
+                },
+                "auth": {
+                    "type": "bearer",
+                    "bearer": [
+                        {
+                            "key": "token",
+                            "value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNzM1MjYxNjUwLCJpYXQiOjE3MzUyNTgwNTAsImp0aSI6ImVlYzRkZTMxMmM1MzQ3NDRiNGViOWMxMmQxNDJkMWRlIiwidXNlcl9pZCI6ImQ4ZjBhOTI4LTM5OWMtNDg1OC04NWMzLTc4OThhNmUyZmNhZiJ9.pUGyY0xetPCxb8Ocivj35FHnfuyofsxvTEqAchUHIHs",
+                            "type": "string"
+                        }
+                    ]
+                }
+            }
+        }
+    ]
+}
