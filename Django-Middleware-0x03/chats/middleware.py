@@ -14,8 +14,6 @@ class RequestLoggingMiddleware:
         self.logger = logging.getLogger(__name__)
 
     def __call__(self, request):
-        auth_header = request.META.get("HTTP_AUTHORIZATION", "No Authorization Header")
-        print(f"DEBUG: Authorization header: {auth_header}")
         # log request details
         user = request.user if request.user.is_authenticated else "Anonymous"
         print(f"DEBUG: User is_authenticated={request.user.is_authenticated}, User={user}")
@@ -36,7 +34,7 @@ class RestrictAccessByTimeMiddleware:
         # restrict hours (9pm to 6am)
         restricted_hours = (21 <= current_hour or current_hour < 6)
         if restricted_hours:
-            return HttpResponseForbidden("<h1>403 Forbidden</h1><p>Acess to this server is restricted during the hours of 9 PM to 6 AM.</p>")
+            return HttpResponseForbidden("<h1>403 Forbidden</h1><p>Access to this server is restricted during the hours of 9 PM to 6 AM.</p>")
         
         response = self.get_response(request)
         return response
@@ -60,7 +58,7 @@ class OffensiveLanguageMiddleware:
             current_time = time.time()
 
             # clean up old timestamps outside the time window
-            message_times = self.ip_message_tracker[user_ip] # all messages by user's IP
+            message_times = self.ip_message_tracker[user_ip] # get all messages by user's IP
             self.ip_message_tracker[user_ip] = [
                 timestamp for timestamp in message_times
                 if current_time - timestamp < self.time_window

@@ -1,1 +1,1 @@
-# Django Middleware
+# Messaging App
