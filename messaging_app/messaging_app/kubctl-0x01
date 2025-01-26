@@ -9,7 +9,7 @@ fi
 
 # Step 1: Scale the deployment to 3 replicas
 echo "Scaling the Django app deployment to 3 replicas..."
-kubectl scale deployment django-app --replicas=3
+kubectl scale deployment messaging-app-deployment --replicas=3
 if [ $? -ne 0 ]; then
     echo "Failed to scale the deployment. Ensure the deployment name is correct."
     exit 1
