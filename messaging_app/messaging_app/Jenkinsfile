@@ -1,32 +1,39 @@
 pipeline {
     agent any
+
+    environment {
+        PYTHON = 'python3'
+    }
+
     stages {
-        stage('Clone Repository') {
+        stage('Checkout') {
             steps {
-                git branch: 'main', url: 'https://github.com/jubriltayo/alx-backend-python'
+                git credentialsId: 'github-creds', url: 'https://github.com/jubriltayo/alx-backend-python', branch: 'main'
             }
         }
+
         stage('Install Dependencies') {
             steps {
-                sh '''
-                    python3 -m venv venv
-                    source venv/bin/activate
-                    pip install -r messaging_app/requirements.txt
-                '''
+                sh 'pip install -r requirements.txt'
             }
         }
+
         stage('Run Tests') {
             steps {
-                sh '''
-                    source venv/bin/activate
-                    pytest messaging_app/tests --junitxml=report.xml
-                '''
+                sh 'pytest --junitxml=test-results.xml'
             }
         }
-        stage('Archive Report') {
+
+        stage('Publish Test Results') {
             steps {
-                archiveArtifacts artifacts: 'report.xml', allowEmptyArchive: true
+                junit 'test-results.xml'
             }
+        }
+    }
+
+    post {
+        always {
+            archiveArtifacts artifacts: 'test-results.xml', fingerprint: true
         }
     }
 }
