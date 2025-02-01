@@ -8,15 +8,6 @@ pipeline {
             }
         }
 
-        stage('Install System Dependencies') {
-            steps {
-                sh '''
-                    apt update
-                    apt install -y pkg-config libmariadb-dev
-                '''
-            }
-        }
-
         stage('Install Python Dependencies') {
             steps {
                 sh '''
