@@ -45,6 +45,13 @@ jobs:
         run: |
           venv/bin/python -m pip install --upgrade pip
           venv/bin/python -m pip install -r messaging_app/messaging_app/requirements.txt
+          venv/bin/python -m pip install flake8 coverage  # Install linting & coverage tools
+
+      - name: Run Flake8 Linting
+        run: |
+          venv/bin/flake8 messaging_app --count --select=E9,F63,F7,F82 --show-source --statistics
+          venv/bin/flake8 messaging_app --count --exit-zero --max-complexity=10 --max-line-length=88 --statistics
+        continue-on-error: false  # Fail the build on linting errors
 
       - name: Verify Django Installation
         run: venv/bin/python -c "import django; print(django.get_version())"
@@ -60,5 +67,14 @@ jobs:
       - name: Run migrations
         run: venv/bin/python messaging_app/messaging_app/manage.py migrate
 
-      - name: Run Django tests
-        run: venv/bin/python messaging_app/messaging_app/manage.py test --verbosity=2
+      - name: Run Tests with Coverage
+        run: |
+          venv/bin/coverage run --source='messaging_app' messaging_app/messaging_app/manage.py test --verbosity=2
+          venv/bin/coverage report -m
+          venv/bin/coverage html
+
+      - name: Upload Coverage Report
+        uses: actions/upload-artifact@v3
+        with:
+          name: coverage-report
+          path: htmlcov
