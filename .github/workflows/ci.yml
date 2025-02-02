@@ -50,8 +50,8 @@ jobs:
       - name: Set up environment variables
         run: |
           echo "MYSQL_DB=messaging_app" >> $GITHUB_ENV
-          echo "MYSQL_USER=root" >> $GITHUB_ENV
-          echo "MYSQL_PASSWORD=root" >> $GITHUB_ENV
+          echo "MYSQL_USER=test_user" >> $GITHUB_ENV
+          echo "MYSQL_PASSWORD=test_password" >> $GITHUB_ENV
           echo "DB_HOST=127.0.0.1" >> $GITHUB_ENV
           echo "DB_PORT=3306" >> $GITHUB_ENV
 
