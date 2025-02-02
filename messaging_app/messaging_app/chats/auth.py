@@ -3,7 +3,6 @@ from rest_framework.exceptions import ValidationError, AuthenticationFailed
 from .models import User
 
 
-
 def create_user(validated_data):
     """
     Standard function to create a user with hashed password
@@ -35,7 +34,8 @@ def generate_tokens_for_user(user):
             "refreshToken": str(token)
         }
     except Exception as e:
-        raise ValidationError({"error": f"Failed to generate tokens: {str(e)}"})
+        raise ValidationError(
+            {"error": f"Failed to generate tokens: {str(e)}"})
 
 
 def authenticate_user(email, password):

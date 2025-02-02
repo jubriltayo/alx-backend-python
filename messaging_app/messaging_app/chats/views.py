@@ -4,14 +4,16 @@ from rest_framework.views import APIView
 from rest_framework.decorators import action
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.pagination import PageNumberPagination
-from rest_framework.exceptions import MethodNotAllowed, AuthenticationFailed
+from rest_framework.exceptions import AuthenticationFailed
 from django_filters.rest_framework import DjangoFilterBackend
 from django.contrib.auth.models import AnonymousUser
 from django.db.models import Count
 from django.views.decorators.cache import cache_page
 from django.utils.decorators import method_decorator
 from .models import User, Message, Conversation
-from .serializers import UserSerializer, MessageSerializer, ConversationSerializer
+from .serializers import (UserSerializer,
+                          MessageSerializer,
+                          ConversationSerializer)
 from .auth import create_user, generate_tokens_for_user, authenticate_user
 from .permissions import IsParticipantOfConversation
 from .filters import MessageFilter
@@ -28,7 +30,8 @@ class UserRegistrationView(APIView):
         serializer = UserSerializer(data=request.data)
         if serializer.is_valid():
             user = create_user(serializer.validated_data)
-            user_serializer = UserSerializer(user) # re-serialize the user to include the user_id
+            # re-serialize the user to include the user_id
+            user_serializer = UserSerializer(user)
             return Response({
                 "status": "success",
                 "message": "User registered successfully",
@@ -49,7 +52,7 @@ class LoginView(APIView):
     """
     permission_classes = [permissions.AllowAny]
 
-    def post (self, request):
+    def post(self, request):
         email = request.data.get('email')
         password = request.data.get('password')
 
@@ -58,13 +61,13 @@ class LoginView(APIView):
                 "status": "error",
                 "message": "Email and password are required"
             }, status=status.HTTP_400_BAD_REQUEST)
-        
+
         try:
             user = authenticate_user(email.lower(), password)
             tokens = generate_tokens_for_user(user)
 
             serializer = UserSerializer(user)
-            
+
             return Response({
                 "status": "success",
                 "message": "Login successful",
@@ -80,7 +83,6 @@ class LoginView(APIView):
             }, status=status.HTTP_401_UNAUTHORIZED)
 
 
-
 # API views
 class UserViewSet(viewsets.ModelViewSet):
     """
@@ -94,14 +96,16 @@ class UserViewSet(viewsets.ModelViewSet):
         # Prevent creating users via this API
         return Response({
             "status": "error",
-            "message": "User creation is not allowed via this endpoint. Please use the registration endpoint instead."
+            "message": "User creation is not allowed via this endpoint. \
+             Please use the registration endpoint instead."
         }, status=status.HTTP_405_METHOD_NOT_ALLOWED)
 
     def list(self, request, *args, **kwargs):
         if request.user.role != 'admin':
             return Response({
                 "status": "error",
-                "message": "You do not have permission to view all users. Only admins can access this resource."
+                "message": "You do not have permission to view all users. \
+                    Only admins can access this resource."
             }, status=status.HTTP_403_FORBIDDEN)
         return super().list(request, *args, **kwargs)
 
@@ -139,7 +143,7 @@ class ConversationViewSet(viewsets.ModelViewSet):
 
         serializer = self.get_serializer(data=data)
         if serializer.is_valid():
-            conversation = serializer.save()
+            serializer.save()
             return Response({
                 "status": "success",
                 "message": "Conversation created successfully",
@@ -150,7 +154,7 @@ class ConversationViewSet(viewsets.ModelViewSet):
             "message": "Failed to create conversation",
             "errors": serializer.errors
         }, status=status.HTTP_400_BAD_REQUEST)
-    
+
 
 class MessagePagination(PageNumberPagination):
     page_size = 20
@@ -174,7 +178,7 @@ class MessageViewSet(viewsets.ModelViewSet):
 
         if not user.is_authenticated or isinstance(user, AnonymousUser):
             return Message.objects.none()
-    
+
         # Filter messages by conversations the user is a participant of
         return Message.objects.filter(conversation__participants=user)
 
@@ -185,10 +189,11 @@ class MessageViewSet(viewsets.ModelViewSet):
         Supports filtering and pagination.
         """
         conversation_id = self.kwargs.get('conversation')
-        
+
         # Filter messages by the specified conversation, if provided
         if conversation_id:
-            queryset = self.get_queryset().filter(conversation__conversation_id=conversation_id)
+            queryset = self.get_queryset().filter(
+                conversation__conversation_id=conversation_id)
         else:
             queryset = self.get_queryset()
 
@@ -206,17 +211,17 @@ class MessageViewSet(viewsets.ModelViewSet):
     @action(detail=False, methods=['post'])
     def send_message(self, request, *args, **kwargs):
         """
-        Send a message to an existing conversation or create a new one based on participants.
+        Send a message to an existing conversation or create \
+            a new one based on participants.
         """
-        # conversation_id = request.data.get('conversation_id')
         participants = request.data.get('participants', [])
         message_data = request.data.get('message_body')
 
         if not participants:
-                return Response({
-                    "status": "error",
-                    "message": "Participants are required"
-                }, status=status.HTTP_400_BAD_REQUEST)
+            return Response({
+                "status": "error",
+                "message": "Participants are required"
+            }, status=status.HTTP_400_BAD_REQUEST)
 
         if not message_data:
             return Response({
@@ -241,7 +246,8 @@ class MessageViewSet(viewsets.ModelViewSet):
         # If no conversation exists, create a new one
         if not conversation:
             conversation_data = {'participants': participants}
-            conversation_serializer = ConversationSerializer(data=conversation_data)
+            conversation_serializer = ConversationSerializer(
+                data=conversation_data)
             if conversation_serializer.is_valid():
                 conversation = conversation_serializer.save()
             else:
@@ -250,7 +256,7 @@ class MessageViewSet(viewsets.ModelViewSet):
                     "message": "Failed to create conversation",
                     "errors": conversation_serializer.errors
                 }, status=status.HTTP_400_BAD_REQUEST)
-        
+
         # create and save the message
         message_serializer = self.get_serializer(data={
             "message_body": message_data,
@@ -259,9 +265,10 @@ class MessageViewSet(viewsets.ModelViewSet):
         })
         if message_serializer.is_valid():
             message_serializer.save()
-            return Response(message_serializer.data, status=status.HTTP_201_CREATED)
-        return Response(message_serializer.errors, status=status.HTTP_400_BAD_REQUEST)
-
+            return Response(message_serializer.data,
+                            status=status.HTTP_201_CREATED)
+        return Response(message_serializer.errors,
+                        status=status.HTTP_400_BAD_REQUEST)
 
     @method_decorator(cache_page(60))
     def unread_messages_view(self, request, *args, **kwargs):
@@ -273,7 +280,7 @@ class MessageViewSet(viewsets.ModelViewSet):
 
         if not user.is_authenticated:
             return Response({"detail": "Authentication required."}, status=401)
-        
+
         unread_messages = Message.unread_messages.for_user(user)
         serializer = MessageSerializer(unread_messages, many=True)
         return Response(serializer.data, status=status.HTTP_200_OK)

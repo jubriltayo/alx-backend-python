@@ -18,15 +18,15 @@ jobs:
         env:
           MYSQL_ROOT_PASSWORD: root
           MYSQL_DATABASE: messaging_app
-          MYSQL_USER: root             
-          MYSQL_PASSWORD: root         
+          MYSQL_USER: test_user
+          MYSQL_PASSWORD: test_password
         ports:
           - 3306:3306
         options: --health-cmd="mysqladmin ping" --health-interval=10s --health-timeout=5s --health-retries=3
 
     steps:
       - name: Checkout code
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
 
       - name: Set up Python
         uses: actions/setup-python@v4
@@ -38,24 +38,43 @@ jobs:
           sudo apt-get update
           sudo apt-get install -y libmariadb-dev build-essential
 
-      - name: Create and activate virtual environment
-        run: |
-          python -m venv venv
-          source venv/bin/activate
+      - name: Create virtual environment
+        run: python -m venv venv
 
       - name: Install Python dependencies
         run: |
-          pip install -r messaging_app/messaging_app/requirements.txt
+          venv/bin/python -m pip install --upgrade pip
+          venv/bin/python -m pip install -r messaging_app/messaging_app/requirements.txt
+          venv/bin/python -m pip install flake8 coverage  # Install linting & coverage tools
+
+      - name: Run Flake8 Linting
+        run: |
+          venv/bin/flake8 messaging_app --exclude .venv,migrations,settings.py --count --select=E9,F63,F7,F82 --show-source --statistics
+          venv/bin/flake8 messaging_app --exclude .venv,migrations,settings.py --count --max-complexity=10 --max-line-length=88 --statistics
+        continue-on-error: false  # Fail the build on linting errors
+
+      - name: Verify Django Installation
+        run: venv/bin/python -c "import django; print(django.get_version())"
 
       - name: Set up environment variables
         run: |
           echo "MYSQL_DB=messaging_app" >> $GITHUB_ENV
-          echo "MYSQL_USER=root" >> $GITHUB_ENV
-          echo "MYSQL_PASSWORD=root" >> $GITHUB_ENV
+          echo "MYSQL_USER=test_user" >> $GITHUB_ENV
+          echo "MYSQL_PASSWORD=test_password" >> $GITHUB_ENV
           echo "DB_HOST=127.0.0.1" >> $GITHUB_ENV
           echo "DB_PORT=3306" >> $GITHUB_ENV
 
-      - name: Run Django tests
+      - name: Run migrations
+        run: venv/bin/python messaging_app/messaging_app/manage.py migrate
+
+      - name: Run Tests with Coverage
         run: |
-          source venv/bin/activate
-          python manage.py test
+          venv/bin/coverage run --source='messaging_app' messaging_app/messaging_app/manage.py test --verbosity=2
+          venv/bin/coverage report -m
+          venv/bin/coverage html
+
+      - name: Upload Coverage Report
+        uses: actions/upload-artifact@v4
+        with:
+          name: coverage-report
+          path: htmlcov
