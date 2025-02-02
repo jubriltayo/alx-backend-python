@@ -18,8 +18,8 @@ jobs:
         env:
           MYSQL_ROOT_PASSWORD: root
           MYSQL_DATABASE: messaging_app
-          MYSQL_USER: test_user             
-          MYSQL_PASSWORD: test_password         
+          MYSQL_USER: test_user
+          MYSQL_PASSWORD: test_password
         ports:
           - 3306:3306
         options: --health-cmd="mysqladmin ping" --health-interval=10s --health-timeout=5s --health-retries=3
@@ -38,14 +38,16 @@ jobs:
           sudo apt-get update
           sudo apt-get install -y libmariadb-dev build-essential
 
-      - name: Create and activate virtual environment
-        run: |
-          python -m venv venv
-          source venv/bin/activate
+      - name: Create virtual environment
+        run: python -m venv venv
 
       - name: Install Python dependencies
         run: |
-          pip install -r messaging_app/messaging_app/requirements.txt
+          venv/bin/python -m pip install --upgrade pip
+          venv/bin/python -m pip install -r messaging_app/messaging_app/requirements.txt
+
+      - name: Verify Django Installation
+        run: venv/bin/python -c "import django; print(django.get_version())"
 
       - name: Set up environment variables
         run: |
@@ -55,7 +57,8 @@ jobs:
           echo "DB_HOST=127.0.0.1" >> $GITHUB_ENV
           echo "DB_PORT=3306" >> $GITHUB_ENV
 
+      - name: Run migrations
+        run: venv/bin/python messaging_app/messaging_app/manage.py migrate
+
       - name: Run Django tests
-        run: |
-          source venv/bin/activate
-          python messaging_app/messaging_app/manage.py test
+        run: venv/bin/python messaging_app/messaging_app/manage.py test --verbosity=2
